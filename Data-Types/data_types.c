@@ -11,6 +11,9 @@ int main() {
     int u = 89U;
     printf("The value of unsigned int u is: %u\n", u);
 
+    long int ul = 37485UL;
+    printf("The value of unsigned long int ul is: %ld\n", ul);
+
     // Float
     float y = 3.14;
     printf("The value of the float y is: %.2f\n", y);

@@ -1,17 +1,20 @@
 #include <stdio.h>
 
-int str_to_unsigned_long_int(char str[]);
+int str_to_unsigned_long_int(char string[]);
 
 int main() {
-    char str[] = "12345";
-    int num = str_to_unsigned_long_int(str);
-
-    printf("The integer value of the string '%s' is: %d\n", str, num);
-
-    return 0;
+    str_to_unsigned_long_int("Jack");
 }
 
 // Function to convert a string to an unsigned long integer
-int str_to_unsigned_long_int(char str[]) {
-    
+int str_to_unsigned_long_int(char string[]) {
+    // char string[] = "sammy";
+    long x = 0;
+
+    for(int i = 0; string[i] != '\0'; i++) {
+        x += (long) string[i];
+    }
+
+    printf("Long int = %ld", x);
+    return 0;
 }

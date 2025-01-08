@@ -73,3 +73,6 @@ int main() {
 
     return 0;
 }
+
+// gcc -o data_types data_types.c
+// ./data_types

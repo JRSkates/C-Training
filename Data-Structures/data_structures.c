@@ -35,3 +35,6 @@ int main() {
 
     return 0;
 }
+
+// gcc -o data_structures data_structures.c
+// ./data_structures

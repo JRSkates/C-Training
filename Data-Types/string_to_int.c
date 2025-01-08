@@ -18,3 +18,6 @@ int str_to_unsigned_long_int(char string[]) {
     printf("Long int = %ld", x);
     return 0;
 }
+
+// gcc -o str_to_int str_to_int.c
+// ./str_to_int

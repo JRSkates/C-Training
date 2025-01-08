@@ -18,3 +18,6 @@ void celcius_converter(int celcius) {
     printf("Temperature in Fahrenheit: %.2f\n", fahrenheit);
     printf("Temperature in Kelvin: %.2f\n", kelvin);
 }
+
+// gcc -o celcius_converter celcius_converter.c
+// ./celcius_converter 

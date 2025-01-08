@@ -17,3 +17,6 @@ int main() {
 int sum_of_three(int a, int b, int c) {
     return a + b + c;
 }
+
+// gcc -o sum_of_three sum_of_three.c
+// ./sum_of_three 

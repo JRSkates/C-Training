@@ -47,8 +47,11 @@ int main() {
 
     // New line and tab
     printf("Line 1\nLine 2\tTabbed\n");
-    
+
 
     return 0;
 }
+
+// gcc -o printf printf.c
+// ./print
 

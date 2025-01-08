@@ -24,6 +24,8 @@ int main() {
     // Arrays can store primitive types (int, char, etc.) or complex types (struct, union).
 
 
+
+
     // Strings
     // A string in C is a character array ending with a null terminator (\0).
 
@@ -41,6 +43,8 @@ int main() {
     // Key Notes:
     // Functions: strlen(), strcpy(), strcat(), strcmp().
     // Strings require #include <string.h> for operations.
+
+
 
 
     // Structs
@@ -74,6 +78,39 @@ int main() {
     // Access members using dot operator (e.g., student1.name).
 
 
+
+
+    // Enums
+    // An enum is a set of named integer constants
+
+    // Enums are meant to make your code easier to read, write, 
+    // and maintain by giving meaningful names to sets of related constants 
+    // (instead of just numbers).
+
+    enum Status { FAILURE, SUCCESS };
+    enum Status status = SUCCESS;
+
+    if (status == SUCCESS) {
+        printf("Success\n");
+    } else if (status == FAILURE) {
+        printf("Failure\n");
+    }
+
+    enum Offices {OESTERLY, BRENTWOOD, LEEDS};   
+
+    enum Offices my_office = BRENTWOOD;
+
+    if (my_office == BRENTWOOD) {
+        printf("I work in the Brentwood office.\n");
+    } else {
+        printf("I don't work in the Brentwood office.\n");
+    }
+
+    // Key Notes:
+    // Enums can be used to define named integer constants.
+    // Access members using enum name (e.g., RED).
+    // Enums are useful when you want to represent a fixed set of related values.
+    // Enums are not available in C++, but they can be used in C.
 
     return 0;
 }

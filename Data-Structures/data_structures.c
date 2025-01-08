@@ -112,6 +112,67 @@ int main() {
     // Enums are useful when you want to represent a fixed set of related values.
     // Enums are not available in C++, but they can be used in C.
 
+
+    
+    // Unions
+    // union is a user-defined data type
+    // Contains elements of the different data types just like structure.
+    // unlike structures, all the members in the C union are stored in the same memory location.
+    // Due to this, only one member can store data at the given point in time.
+
+    union Data {
+        int num;
+        char ch;
+        float flt;
+    };
+
+    union Data data;
+
+    data.num = 10;
+    printf("Integer value: %d\n", data.num);
+
+    data.ch = 'A';
+    printf("Character value: %c\n", data.ch);
+
+    data.flt = 3.14;
+    printf("Float value: %.2f\n", data.flt);
+
+    // Key Notes:
+    // Unions can be used to store different data types in memory.
+    // Access members using union name (e.g., data.num).
+    // Unions are useful when you want to save memory and only need to 
+    // store one value at a time.
+
+
+
+
+    // Typedef
+    // typedef is a keyword in C that allows you to create a new name (alias)
+    // for an existing data type.
+
+    typedef unsigned int uint;
+    uint my_uint = 10;
+    printf("Unsigned integer value: %u\n", my_uint);
+
+    typedef long long ll;
+    ll my_ll = 10000000000;
+    printf("Long long integer value: %lld\n", my_ll);
+
+    // You can use typedef to define an alias for a structure
+    typedef struct Food {
+        char name[50];
+        float price;
+    } food;
+
+    food my_food = {"Pizza", 15.99};
+    printf("Food name: %s\n", my_food.name);
+    printf("Food price: %.2f\n", my_food.price);
+
+    // Key Notes:
+    // Typedef is useful when you want to make your code more readable and maintainable.
+    // Typedef allows you to create a new data type by using an existing data type.
+    // Use typedef keyword before struct definition to create a new data type.
+
     return 0;
 }
 

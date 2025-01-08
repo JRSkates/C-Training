@@ -19,5 +19,5 @@ int str_to_unsigned_long_int(char string[]) {
     return 0;
 }
 
-// gcc -o str_to_int str_to_int.c
+// gcc -o string_to_int string_to_int.c
 // ./str_to_int

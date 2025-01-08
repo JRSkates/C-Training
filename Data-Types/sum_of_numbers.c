@@ -18,5 +18,5 @@ int sum_of_three(int a, int b, int c) {
     return a + b + c;
 }
 
-// gcc -o sum_of_three sum_of_three.c
+// gcc -o sum_of_numbers sum_of_numbers.c
 // ./sum_of_three 

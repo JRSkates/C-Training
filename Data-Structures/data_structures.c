@@ -18,6 +18,11 @@ int main() {
     }
     printf("\n");
 
+    // Key Notes:
+    // Indexing starts at 0.
+    // Out-of-bound access causes undefined behavior.
+    // Arrays can store primitive types (int, char, etc.) or complex types (struct, union).
+
 
     // Strings
     // A string in C is a character array ending with a null terminator (\0).
@@ -32,6 +37,43 @@ int main() {
 
     printf("Length: %lu\n", strlen(str1));  // Length
     printf("Compare: %d\n", strcmp(str1, str2));  // Compare
+
+    // Key Notes:
+    // Functions: strlen(), strcpy(), strcat(), strcmp().
+    // Strings require #include <string.h> for operations.
+
+
+    // Structs
+    // A struct is a user-defined data type that can contain multiple data members.
+
+    struct Student {
+        int id;
+        char name[50];
+        float marks;
+    };
+
+    struct Student student1 = {1, "John Doe", 85.5};
+    printf("Student ID: %d\n", student1.id);
+    printf("Student Name: %s\n", student1.name);
+    printf("Student Marks: %.2f\n", student1.marks);
+
+    struct Person {
+        char name[50];
+        int age;
+        float height;
+    };
+
+    struct Person p1 = {"Alice", 25, 5.6};
+
+    printf("Name: %s\n", p1.name);
+    printf("Age: %d\n", p1.age);
+    printf("Height: %.1f\n", p1.height);
+
+    // Key Notes:
+    // Structures can contain various data types (int, char, float, etc.).
+    // Access members using dot operator (e.g., student1.name).
+
+
 
     return 0;
 }

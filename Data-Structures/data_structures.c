@@ -113,6 +113,7 @@ int main() {
     // Enums are not available in C++, but they can be used in C.
 
 
+
     
     // Unions
     // union is a user-defined data type
@@ -172,6 +173,47 @@ int main() {
     // Typedef is useful when you want to make your code more readable and maintainable.
     // Typedef allows you to create a new data type by using an existing data type.
     // Use typedef keyword before struct definition to create a new data type.
+
+
+
+
+    // Bit Fields
+    // Bit fields are a feature of C that allows you to define variables
+    // with a specified number of bits.
+
+    struct BitStatus {
+        unsigned int isVisible : 1;  // 1 bit
+        unsigned int isEditable : 1; // 1 bit
+        unsigned int isDeleted : 1;  // 1 bit
+    };
+
+    struct BitStatus fileStatus = {1, 0, 1}; // Initialize bit fields
+
+    printf("Visible: %d\n", fileStatus.isVisible);
+    printf("Editable: %d\n", fileStatus.isEditable);
+    printf("Deleted: %d\n", fileStatus.isDeleted);
+
+
+    // Key Notes:
+    // Bit fields are useful when you want to save memory by using fewer bytes 
+    // to store a variable.
+    // Bit fields are declared within a structure or union.
+
+
+
+    // Bit Masks
+    // Bit masks are a technique used in programming to manipulate and 
+    // access specific bits in a variable.
+
+    int x = 9;             // 0000 1001
+    int mask = 1 << 2;     // 0000 0100 (Shift 1 left by 2 positions)
+    x = x | mask;          // 0000 1001 | 0000 0100 = 0000 1101
+    printf("%d\n", x);     // Output: 13
+
+    // Key Notes:
+    // Bit masks are used to manipulate and access specific bits in a variable.
+    // Bit masks are used when you want to set, clear, or toggle specific bits.
+    // Bit masks are typically used in bitwise operations to manipulate binary data.
 
     return 0;
 }

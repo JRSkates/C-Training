@@ -92,5 +92,19 @@ int main() {
     // Thursday
     printf("\n");
 
+
+
+
+    // for loops
+    // Executes a block of code a specified number of times
+    int sum = 0;
+
+    for (int i = 0; i <= 10; i++) {
+        sum += i;
+    }
+    printf("The sum of numbers from 0 to 10 is: %d\n", sum);
+    // The sum of numbers from 0 to 10 is: 55
+    printf("\n");
+
     return 0;
 }

@@ -106,5 +106,54 @@ int main() {
     // The sum of numbers from 0 to 10 is: 55
     printf("\n");
 
+
+
+
+    // While loop
+    // Executes a block of code while a condition is true
+    int count = 0;
+
+    while (count < 10) {
+        printf("While Count: %d\n", count);
+        count++;
+    }
+    // Count: 0
+    // Count: 1
+    // Count: 2
+    // Count: 3
+    // Count: 4
+    // Count: 5
+    // Count: 6
+    // Count: 7
+    // Count: 8
+    // Count: 9
+    printf("\n");
+
+
+
+
+    // do-while loop
+    // Executes a block of code at least once
+    // then repeats as long as the condition is true.
+
+    int count_two = 0;
+
+    do {
+        printf("Do-While Count: %d\n", count_two);
+        count_two++;
+    } while (count_two < 10);
+    // Count: 0
+    // Count: 1
+    // Count: 2
+    // Count: 3
+    // Count: 4
+    // Count: 5
+    // Count: 6
+    // Count: 7
+    // Count: 8
+    // Count: 9
+    // Count: 10
+    printf("\n");
+
     return 0;
 }

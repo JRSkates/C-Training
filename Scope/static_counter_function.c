@@ -1,6 +1,10 @@
 #include <stdio.h>
 
-void counter_function();
+void counter_function() {
+    static int counter = 0; // Static variable to retain its value between function calls
+    counter++;
+    printf("Counter: %d\n", counter);
+}
 
 int main(void) {
     for (int i = 0; i < 10; i++) {
@@ -8,10 +12,4 @@ int main(void) {
     }
 
     return 0;
-}
-
-void counter_function() {
-    static int counter = 0; // Static variable to retain its value between function calls
-    counter++;
-    printf("Counter: %d\n", counter);
 }

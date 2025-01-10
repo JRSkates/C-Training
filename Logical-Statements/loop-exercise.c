@@ -31,6 +31,10 @@ int main(void) {
         }
     }
 
+    printf("The final values:\n");
+    printf("A: %d\n", a);
+    printf("B: %d\n", b);
+
     return 0;
 
     //Output:

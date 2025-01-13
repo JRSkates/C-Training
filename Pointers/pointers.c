@@ -25,8 +25,11 @@ int main() {
     // The * operator (dereferencing) accesses the value 
     // at the address stored in a pointer.
 
+    int A = 100; // A is a normal variable
+    int *B = &A; // B is a pointer variable, pointing at the memory address of A
+
     int num = 42;
-    int *ptr;       // Declare a pointer to an int
+    int *ptr = NULL;       // Declare a pointer to an int
 
     ptr = &num;     // Store the address of num in ptr
 
@@ -57,6 +60,6 @@ int main() {
     // You don't need the & operator to assign a function to a function pointer 
     // (e.g., func_ptr = function;).
     // You can call a function using (*func_ptr)(args) or simply func_ptr(args).
-    
+
     return 0;
 }

@@ -60,6 +60,7 @@ void heapExample() {
     printf("Heap variable: %d\n", *p);
 
     free(p); // Free the memory to prevent memory leaks
+    p = NULL; // Set the pointer to NULL to prevent dangling pointers
 }
 int main() {
     stackExample();

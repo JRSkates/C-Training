@@ -77,6 +77,11 @@ int main() {
     short tc_short = (short) char_tc;
     printf("The value of tc_short (short) converted to char is: %c\n", tc_short); 
 
+    int num1 = 5;
+    int num2 = 2;
+    float sum = (float) num1 / num2;
+    printf("%.1f", sum); // 2.5
+
 
     // Arithmetic Operations
     int add = x + y;

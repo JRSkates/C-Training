@@ -11,6 +11,22 @@ int main() {
     int x = 10;
     printf("The value of int x is: %d\n", x);
 
+    // Short
+    // Signed Integers: Can hold positive and negative values (default for short).
+    // Signed Range: -32,768 to 32,767
+    short si = 5000;
+    printf("The value of short int si is: %d\n", si);
+
+    // Unsigned Short
+    // Only hold non-negative values, 
+    // but their range is double that of signed integers for the same number of bits.
+    // Unsigned Range: 0 to 65,535
+    unsigned short usi = 5000U; // (cannot hold negative values)
+    printf("The value of unsigned short int usi is: %hu\n", usi);
+
+    // Long
+    // Signed Integers: Can hold positive and negative values (default for long).
+
     // Unsigned Int
     // Only hold non-negative values, 
     // but their range is double that of signed integers for the same number of bits.
@@ -57,6 +73,10 @@ int main() {
     int d = (int) c_double;
     printf("The value of c_double (double) converted to int is: %d\n", d);
 
+    char char_tc = 'A';
+    short tc_short = (short) char_tc;
+    printf("The value of tc_short (short) converted to char is: %c\n", tc_short); 
+
 
     // Arithmetic Operations
     int add = x + y;
@@ -82,6 +102,25 @@ int main() {
     printf("The value of f before decrement is: %d\n", f);
     f--;
     printf("The value of f after decrement is: %d\n", f);
+
+
+    // We can use the sizeof() function to determine the size of
+    // a data type in bytes
+    printf("Size of int: %lu bytes\n", sizeof(int));
+    // Size of int: 4 bytes
+    printf("Size of short int: %lu bytes\n", sizeof(short));
+    // Size of short: 2 bytes
+    printf("Size of unsigned int: %lu bytes\n", sizeof(unsigned int));
+    // Size of unsigned int: 4 bytes
+    printf("Size of float: %lu bytes\n", sizeof(float));
+    // Size of float: 4 bytes
+    printf("Size of double: %lu bytes\n", sizeof(double));
+    // Size of double: 8 bytes
+    printf("Size of char: %lu byte\n", sizeof(char));
+    // Size of char: 1 byte
+    printf("Size of long double: %lu bytes\n", sizeof(long double));
+    // Size of long double: 8 bytes
+
 
     return 0;
 }

@@ -58,6 +58,29 @@ int main() {
     printf("Line 1\nLine 2\tTabbed\n");
 
 
+    // User input
+    int my_num;
+
+    printf("Enter an integer: ");
+
+    // Get and save the integer using scanf
+    scanf("%d", &my_num);
+
+    // Output the integer
+    printf("You entered: %d\n", my_num);
+
+
+    char firstName[30];
+
+    printf("Enter your first name: \n");
+
+    // Get and save the text
+    scanf("%s", firstName);
+
+    // Output the text
+    printf("Hello %s", firstName);
+
+
     return 0;
 }
 

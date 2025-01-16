@@ -32,7 +32,7 @@ int main() {
     int myInt;
 
     // Get the memory size of an int
-    printf("%zu\n", sizeof(myInt));
+    printf("%lu\n", sizeof(myInt));
     // Result:
     // 4
 
@@ -40,7 +40,7 @@ int main() {
     // which means that the entire array takes up 16 bytes (4 * 4) of memory storage:
 
     // Get the size of the myNumbers array
-    printf("%zu\n", sizeof(myNumbers));
+    printf("%lu\n", sizeof(myNumbers));
     // Result:
     // 16
 

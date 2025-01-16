@@ -3,15 +3,15 @@
 #include <stdio.h>
 
 int main() {
+    int word_count = 0;
+    char c;
+    
     FILE *file = fopen("exercise2.txt", "r");
 
     if (file == NULL) {
         printf("Error opening file!\n");
         return 1;
     }
-
-    int word_count = 0;
-    char c;
 
     // Read each character from the file
     while ((c = fgetc(file))!= EOF) {

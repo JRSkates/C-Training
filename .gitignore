@@ -17,6 +17,7 @@ Scope/phrase_function
 Scope/static_counter_function
 Program-Linking/program_linking
 Memory-Management/heap_vs_stack
+Memory-Management/memory_address
 Pointers/pointers
 Pointers/exercise_1
 Pointers/exercise_2

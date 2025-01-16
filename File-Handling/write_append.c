@@ -19,4 +19,6 @@ int main() {
 
     // Close the file once done
     fclose(file_two);
+
+    return 0;
 }

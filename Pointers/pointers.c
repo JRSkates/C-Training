@@ -16,7 +16,26 @@ int add(int a, int b) {
 }
 
 int main() {
-    // 1. Variable Pointers
+    // A pointer is a variable that stores the memory address of another variable as its value.
+    // A pointer variable points to a data type (like int) of the same type, and is created with the * operator.
+    // The address of the variable you are working with is assigned to the pointer:
+
+    int my_age = 43;     // An int variable
+    int* age_ptr = &my_age;  // A pointer variable, with the name ptr, that stores the address of myAge
+
+    // Output the value of myAge (43)
+    printf("%d\n", my_age);
+
+    // Output the memory address of myAge (0x16eed7418)
+    printf("%p\n", &my_age);
+
+    // Output the memory address of myAge with the pointer (0x16eed7418)
+    printf("%p\n", age_ptr);
+
+    // Output the value of myAge with dereferencing (43)
+    printf("%d\n", *age_ptr);
+
+    // Variable Pointers
     // Variable pointers are pointers that hold the address of a variable.
 
     // Key Points:

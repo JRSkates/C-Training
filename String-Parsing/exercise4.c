@@ -7,18 +7,20 @@
 // This is the comparison function that will be passed to qsort. 
 // It tells qsort how to compare two elements in the array.
 int compare(const void *a, const void *b) {
-    return strcmp(*(const char **)a, *(const char **)b);
+    return (*(char *)a - *(char *)b);
 }
+// *(char *)a: Dereferences the casted pointer to retrieve the char value pointed to by a.
+// *(char *)b: Dereferences the casted pointer to retrieve the char value pointed to by b.
 
 int main() {
-    char *str_arr[] = {"hello", "my", "name", "is", "Jack", "Skates"};
+    char str_arr[] = {'h', 'e', 'l', 'l', 'o'};
     int arr_length = sizeof(str_arr) / sizeof(str_arr[0]);
 
-    qsort(str_arr, arr_length, sizeof(char *), compare);
+    qsort(str_arr, arr_length, sizeof(char), compare);
 
     printf("Sorted string array in ascending order:\n");
     for (int i = 0; i < arr_length; i++) {
-        printf("%s\n", str_arr[i]);
+        printf("%c\n", str_arr[i]);
     }
 
     return 0;

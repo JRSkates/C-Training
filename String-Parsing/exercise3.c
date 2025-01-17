@@ -13,9 +13,11 @@ void to_lowercase(char *str) {
 int main() {
     char str[] = "The is my string my favourite string made for my exercise";
     int count = 0;
-    char word[] = "my";
+    char word[] = "string";
 
     // copy of the string so we don't modify the original string
+
+    // better to use malloc here
     char str_copy[sizeof(str)];
     strcpy(str_copy, str);
 

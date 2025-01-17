@@ -5,10 +5,10 @@
 
 int main() {
     char str[] = "My String!";
-    int length = strlen(str) - 1;
+    int length = strlen(str);
 
     for(int i = 0; i < length; i++) {
-        printf("%c\n", str[length - i]); // Print characters in reverse order
+        printf("%c\n", str[length - i - 1]); // Print characters in reverse order
     }
 
     return 0;

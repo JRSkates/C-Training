@@ -1,5 +1,6 @@
 // Creating Libraries in C
-// Libraries in C are reusable collections of functions or code that can be linked to your program. There are two types:
+// Libraries in C are reusable collections of functions or code that can be linked to your program. 
+// There are two types:
 
 // Static Libraries
 // Static libraries are .a files (on Linux/Unix) or .lib files (on Windows).
@@ -52,7 +53,8 @@
 // Steps to Create a Shared Library
 // Create C Source Files Use the same source file as above (math_functions.c).
 
-// Compile Object Files with PIC (Position-Independent Code) Shared libraries require PIC to allow multiple programs to share the library in memory:
+// Compile Object Files with PIC (Position-Independent Code) Shared libraries 
+// require PIC to allow multiple programs to share the library in memory:
 
 // bash
 // gcc -c -fPIC math_functions.c -o math_functions.o

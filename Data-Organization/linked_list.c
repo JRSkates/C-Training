@@ -27,7 +27,6 @@ void insert_at_beginning(struct Node** head, int new_data) {
     new_node->next = *head;    // Link the new node to the current head
     *head = new_node;          // Update the head pointer to the new node
 }
-// How It Works:
 // Allocate memory for the new node using malloc.
 // Initialize the data field with new_data.
 // Set the next pointer of the new node to the current head of the list.
@@ -53,6 +52,11 @@ void insert_at_end(struct Node** head, int new_data) {
     // Insert the new node at the end
     last->next = new_node;
 }
+// Allocate memory for the new node using malloc
+// Initialize the data field with new_data.
+// Move through the list to find the last node
+// Insert the new node at the end of the list
+
 
 
 void delete_node(struct Node** head, int key) {
@@ -82,7 +86,6 @@ void delete_node(struct Node** head, int key) {
     prev->next = temp->next; // Unlink the node from the list
     free(temp);              // Free the memory of the deleted node
 }
-// How It Works:
 // Handle the special case where the key is in the head node.
 // Traverse the list to locate the node with the key.
 // If the node is found, unlink it from the list and free its memory.
@@ -98,7 +101,6 @@ void print_list(struct Node* head) {
     }
     printf("NULL\n"); // Indicate the end of the list
 }
-// How It Works:
 // Start from the head and traverse the list using a temporary pointer.
 // Print the data of each node followed by an arrow (->).
 // Stop when the pointer reaches NULL.
@@ -114,7 +116,6 @@ int search(struct Node* head, int key) {
     }
     return 0; // Key not found
 }
-// How It Works:
 // Traverse the list from the head to the end.
 // If a node contains the key, return 1 (found).
 // If the end of the list is reached without finding the key, return 0.
@@ -130,7 +131,6 @@ void free_list(struct Node** head) {
         free(temp);           // Free the memory of the current node
     }
 }
-// How It Works:
 // Start from the head of the list.
 // Use a temporary pointer to store the current node.
 // Move the head pointer to the next node.
@@ -157,6 +157,7 @@ int main() {
     printf("Search for %d: %s\n", key, search(head, key) ? "Found" : "Not Found");
 
     // Delete a node
+    delete_node(&head, 50);
     delete_node(&head, 40);
     printf("After deletion: ");
     print_list(head);

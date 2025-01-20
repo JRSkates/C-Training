@@ -107,7 +107,7 @@ void print_list(struct Node* head) {
 
 
 
-int search(struct Node* head, int key) {
+int is_value_in_list(struct Node* head, int key) {
     struct Node* temp = head;  // Temporary pointer to traverse the list
     while (temp != NULL) {
         if (temp->data == key) // Check if the current node contains the key
@@ -154,7 +154,7 @@ int main() {
 
     // Search for a value
     int key = 20;
-    printf("Search for %d: %s\n", key, search(head, key) ? "Found" : "Not Found");
+    printf("Search for %d: %s\n", key, is_value_in_list(head, key) ? "Found" : "Not Found");
 
     // Delete a node
     delete_node(&head, 50);

@@ -85,6 +85,7 @@ void delete_node(struct Node** head, int key) {
     // Case 4: Key found, delete the node
     prev->next = temp->next; // Unlink the node from the list
     free(temp);              // Free the memory of the deleted node
+    temp = NULL;
 }
 // Handle the special case where the key is in the head node.
 // Traverse the list to locate the node with the key.

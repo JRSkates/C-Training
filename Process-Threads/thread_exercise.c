@@ -41,15 +41,15 @@ int main() {
     }
 
     // Join only the second thread (threads[1])
-    // if (pthread_join(threads[1], NULL) == 0) {
-    //     printf("Successfully joined thread 2\n");
-    // } else {
-    //     printf("Failed to join thread 2\n");
-    // }
-
-    for (i = 0; i < 4; i++) {
-        pthread_join(threads[i], NULL);
+    if (pthread_join(threads[1], NULL) == 0) {
+        printf("Successfully joined thread 2\n");
+    } else {
+        printf("Failed to join thread 2\n");
     }
+
+    // for (i = 0; i < 4; i++) {
+    //     pthread_join(threads[i], NULL);
+    // }
 
     return 0;
 }

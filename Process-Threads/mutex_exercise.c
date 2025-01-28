@@ -22,6 +22,7 @@
 // */
 
 int database = 0;
+pthread_mutex_t mutex;
 
 /// @brief 
 /// @param reader_ptr
@@ -44,7 +45,6 @@ void *reader_function(void *reader_ptr) {
 /// @return 
 void *writer_function(void *writer_ptr) {
     int writer_id = *((int *)writer_ptr);
-    pthread_mutex_t mutex;
     pthread_mutex_init(&mutex, NULL);
 
     pthread_mutex_lock(&mutex); // Lock the database

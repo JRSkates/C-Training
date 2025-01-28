@@ -1,94 +1,117 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <sys/types.h>
-#include <sys/wait.h>
 #include <pthread.h>
 
-// /*
-
-// A shared database is accessed by two types of processes:​
-
-// Readers: Processes that only need to read the data.​
-// Writers: Processes that modify (write to) the data.​
-
-// To ensure data consistency and avoid conflicts, the following rules must be followed:​
-// - Multiple readers can access the database at the same time (read concurrently).​
-// - Only one writer can access the database at a time.​
-// - If a writer is writing to the database, no reader should be able to access it.
-
-// Exercise:​
-// Write a multithreaded program in C to implement the readers-writers problem using mutex locks.
-// */
-
 int database = 0;
-pthread_mutex_t mutex;
+int reader_count = 0;
+pthread_mutex_t database_mutex;     // Protects database
+pthread_mutex_t reader_mutex; // Protects reader
 
-/// @brief 
-/// @param reader_ptr
-/// @return 
-void *reader_function(void *reader_ptr) {
-    int reader_id = *((int *)reader_ptr);
+void *reader(void *arg) {
+    int reader_id = *(int *)arg;
 
-    // Read data from shared resource
-    printf("Reader %d is reading...\n", reader_id);
-    printf("Data: %d\n", database);
-    sleep(3);
+    // Continuous while loop
+    while (1) {
+        // Lock the reader mutex to safely update the reader count
+        pthread_mutex_lock(&reader_mutex);
+        reader_count++;
 
-    // Release lock for shared resource
+        // If this is the first reader, lock the database mutex
+        if (reader_count == 1) {
+            pthread_mutex_lock(&database_mutex);
+        }
+
+        // Unlock the reader mutex to allow other readers to access the database
+        pthread_mutex_unlock(&reader_mutex);
+
+        // Read from the database
+        printf("Reader %d read database value: %d\n", reader_id, database);
+        sleep(2);
+
+        // Unlock reader_count mutex to update reader_count
+        pthread_mutex_lock(&reader_mutex);
+        reader_count--;
+        if (reader_count == 0) {
+            // Last reader unlocks the resource for the writers
+            pthread_mutex_unlock(&database_mutex);
+        }
+        pthread_mutex_unlock(&reader_mutex);
+
+        sleep(rand() % 3 + 1); // Simulate time between reads
+    }
 
     pthread_exit(NULL);
 }
 
-/// @brief 
-/// @param writer_ptr 
-/// @return 
-void *writer_function(void *writer_ptr) {
-    int writer_id = *((int *)writer_ptr);
-    pthread_mutex_init(&mutex, NULL);
+void *writer(void *arg) {
+    int writer_id = *(int *)arg;
 
-    pthread_mutex_lock(&mutex); // Lock the database
+    // Continuous while loop
+    while (1) {
+        // Lock the database mutex to prevent data corruption
+        pthread_mutex_lock(&database_mutex);
 
-    printf("Writer %d is writing...\n", writer_id);
-    database++;
-    sleep(5);
+        // Write to the database
+        database++;
+        printf("Writer %d wrote to database value: %d\n", writer_id, database);
 
-    pthread_mutex_unlock(&mutex); // Unlock the database
+        // Unlock the database mutex
+        pthread_mutex_unlock(&database_mutex);
 
-    pthread_mutex_destroy(&mutex); // Destroy the mutex lock
+        sleep(rand() % 3 + 1); // Simulate time between writes
+    }
+
     pthread_exit(NULL);
 }
 
-int main() {
+int main(void) {
+    // initialize threads and index arrays
+    pthread_t readers[5], writers[2];
+    int reader_id[5], writer_id[2];
+    int i;
 
-    // Create reader and writer threads
-    pthread_t reader_thread[5];
-    pthread_t writer_thread[2];
-    int reader_id[5];
-    int writer_id[2];
+    // initialize mutex
+    pthread_mutex_init(&reader_mutex, NULL);
+    pthread_mutex_init(&database_mutex, NULL);
 
-    // Create writer threads
-    for (int i = 0; i < 2; i++) {
-        writer_id[i] = i + 1;
-        pthread_create(&writer_thread[i], NULL, writer_function, &writer_id[i]);
-        pthread_join(writer_thread[i], NULL);
+    // create reader threads
+    for (i = 0; i < 5; i++) {
+        reader_id[i] = i;
+        if (pthread_create(&readers[i], NULL, reader, &reader_id[i]) != 0) {
+            printf("Error creating reader thread\n");
+            return 1;
+        }
     }
 
-    // Create reader threads
-    for (int i = 0; i < 5; i++) {
-        reader_id[i] = i + 1;
-        pthread_create(&reader_thread[i], NULL, reader_function, &reader_id[i]);
+    // create writer threads
+    for (i = 0; i < 2; i++) {
+        writer_id[i] = i;
+        if (pthread_create(&writers[i], NULL, writer, &writer_id[i]) != 0) {
+            printf("Error creating writer thread\n");
+            return 1;
+        }
     }
 
-    // Wait for reader threads to finish
-    for (int i = 0; i < 5; i++) {
-        pthread_join(reader_thread[i], NULL);
+    // join reader threads
+    for (i = 0; i < 5; i++) {
+        if (pthread_join(readers[i], NULL)!= 0) {
+            printf("Error joining reader thread\n");
+            return 2;
+        }
     }
 
-    // Wait for writer threads to finish
-    // for (int i = 0; i < 3; i++) {
-    //     pthread_join(writer_thread[i], NULL);
-    // }
+    // join writer threads
+    for (i = 0; i < 2; i++) {
+        if (pthread_join(writers[i], NULL)!= 0) {
+            printf("Error joining writer thread\n");
+            return 2;
+        }
+    }
+
+    // Destroy
+    pthread_mutex_destroy(&reader_mutex);
+    pthread_mutex_destroy(&database_mutex);
 
     return 0;
 }

@@ -3,21 +3,25 @@
 #include <unistd.h>
 #include <pthread.h>
 
+int mails = 0;
+
 // When you create a thread, it executes a function
 void *routine() {
-    // print a message
-    printf("Test from threads\n");
+    
+    for (int i = 0; i < 100; i++) {
+        // increment mails
+        mails++;
+    }
     // wait 3 seconds
-    sleep(3);
-    // print end message
-    printf("Thread finished\n");
+    // sleep(3);
     // return a value to indicate success
     return 0;  // void* return type is required for pthread_create() to work correctly. 0 means success.
 }
 
+
 int main(void) {
     // Define where information can be stored about the thread
-    // We can declare moer than one thread like you would variables
+    // We can declare more than one thread like you would variables
     pthread_t t1, t2;
 
     // Initialize a thread with the _create function
@@ -36,15 +40,22 @@ int main(void) {
         return 2;
     };
 
-
     // We have to wait for the thread to finish it's execution
+    // The second parameter is a pointer to an integer that will receive the exit status of the thread
+    // In this case, NULL means we don't care about the exit status
+    // Note: pthread_join() blocks the calling thread until the thread specified by the first parameter terminates
+    // Returns 0 if it is successful, or an error number if it fails
     if (pthread_join(t1, NULL) != 0) {
         return 3;
     };
-    
+
     if (pthread_join(t2, NULL) != 0) {
         return 4;
     };
+
+    // Print the final count of mails
+    printf("Number of mails: %d\n", mails);
+
 
     return 0;
 }

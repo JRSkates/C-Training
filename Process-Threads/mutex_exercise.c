@@ -22,14 +22,17 @@ void *reader(void *arg) {
             pthread_mutex_lock(&database_mutex);
         }
 
+        // Read from the database
+        printf("Reader %d started reading from database...\n", reader_id);
+        sleep(rand() % 3 + 1);
+        printf("Reader %d read database value: %d\n", reader_id, database);
+
+
         // Unlock the reader mutex to allow other readers to access the database
         pthread_mutex_unlock(&reader_mutex);
 
-        // Read from the database
-        printf("Reader %d read database value: %d\n", reader_id, database);
-        sleep(2);
 
-        // Unlock reader_count mutex to update reader_count
+        // Lock reader_count mutex to safely update reader_count
         pthread_mutex_lock(&reader_mutex);
         reader_count--;
         if (reader_count == 0) {
@@ -53,7 +56,9 @@ void *writer(void *arg) {
         pthread_mutex_lock(&database_mutex);
 
         // Write to the database
+        printf("Writer %d started writing to database...\n", writer_id);
         database++;
+        sleep(rand() % 3 + 1);
         printf("Writer %d wrote to database value: %d\n", writer_id, database);
 
         // Unlock the database mutex
@@ -77,7 +82,7 @@ int main(void) {
 
     // create reader threads
     for (i = 0; i < 5; i++) {
-        reader_id[i] = i;
+        reader_id[i] = i + 1;
         if (pthread_create(&readers[i], NULL, reader, &reader_id[i]) != 0) {
             printf("Error creating reader thread\n");
             return 1;
@@ -86,7 +91,7 @@ int main(void) {
 
     // create writer threads
     for (i = 0; i < 2; i++) {
-        writer_id[i] = i;
+        writer_id[i] = i + 1;
         if (pthread_create(&writers[i], NULL, writer, &writer_id[i]) != 0) {
             printf("Error creating writer thread\n");
             return 1;

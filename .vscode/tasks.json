@@ -8,6 +8,7 @@
                 "-fcolor-diagnostics",
                 "-fansi-escape-codes",
                 "-g",
+                "-pthread",
                 "${file}",
                 "-o",
                 "${fileDirname}/${fileBasenameNoExtension}"

@@ -31,8 +31,10 @@ Use a semaphore to achieve this
 
 #define BUFFER_SIZE 10
 #define BUFFER_EMPTY 0
-#define PRODUCER_NUM 10
-#define CONSUMER_NUM 10
+#define PRODUCER_NUM 15
+#define CONSUMER_NUM 15
+#define CONSUMER_SEMAPHORE "/consumer_semaphore"
+#define PRODUCER_SEMAPHORE "/producer_semaphore"
 
 sem_t *consumer_sem; // waits when buffer is empty
 sem_t *producer_sem; // waits when buffer is full
@@ -101,14 +103,14 @@ int main() {
     pthread_mutex_init(&buffer_mutex, NULL);
 
     // Create consumer semaphore
-    consumer_sem = sem_open("/consumer_semaphore", O_CREAT, 0644, 0);
+    consumer_sem = sem_open(CONSUMER_SEMAPHORE, O_CREAT, 0644, 0);
     if (consumer_sem == SEM_FAILED) {
         perror("Failed to open consumer semaphore");
         return 1;
     }
 
     // Create producer semaphore
-    producer_sem = sem_open("/producer_semaphore", O_CREAT, 0644, BUFFER_SIZE);
+    producer_sem = sem_open(PRODUCER_SEMAPHORE, O_CREAT, 0644, BUFFER_SIZE);
     if (producer_sem == SEM_FAILED) {
         perror("Failed to open producer semaphore");
         return 1;

@@ -32,16 +32,12 @@
 #define PRODUCER_NUM 10
 #define CONSUMER_NUM 10
 
-sem_t *consumer_sem;
-sem_t *producer_sem;
+sem_t *consumer_sem; // waits when buffer is empty
+sem_t *producer_sem; // waits when buffer is full
 
 pthread_mutex_t buffer_mutex; // Protects buffer
 
-
 int buffer = 0;
-int in = 0;
-int out = 0;
-
 
 void* producer(void* args) {
     int producer_id = *(int*)args;
@@ -54,10 +50,12 @@ void* producer(void* args) {
         buffer++;
         printf("Producer: %d produced item, buffer at: %d\n", producer_id, buffer);
         pthread_mutex_unlock(&buffer_mutex);
+        
+        // Increment consumer semaphore to reflect new addition to buffer
         sem_post(consumer_sem);
-        sleep(rand() % 3 + 1);
 
-         // Simulate producing time
+        // Simulate producing time
+        sleep(rand() % 3 + 1);
     }
     
     free(args);
@@ -67,7 +65,6 @@ void* producer(void* args) {
 void* consumer(void* args) {
     int consumer_id = *(int*)args;
     while (1) {
-    
         // If buffer is empty, wait for more items to be produced
         sem_wait(consumer_sem);
 
@@ -76,10 +73,10 @@ void* consumer(void* args) {
         buffer--;
         printf("Consumer: %d took from buffer, buffer at: %d\n", consumer_id, buffer);
         pthread_mutex_unlock(&buffer_mutex);
+
         // Increment producer semaphore to indicate space in the buffer
         sem_post(producer_sem);
         sleep(rand() % 3 + 1);
-
     }
 
     free(args);

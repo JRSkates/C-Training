@@ -2,6 +2,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <pthread.h>
+#include <time.h>
 #include <semaphore.h>
 #include <fcntl.h>
 
@@ -26,34 +28,36 @@
 // Use a semaphore to achieve this
 
 #define BUFFER_SIZE 10
-#define PRODUCER_NUM 5
-#define CONSUMER_NUM 5
+#define BUFFER_EMPTY 0
+#define PRODUCER_NUM 10
+#define CONSUMER_NUM 10
 
 sem_t *consumer_sem;
 sem_t *producer_sem;
-// sem_t *buffer_empty;
+
+pthread_mutex_t buffer_mutex; // Protects buffer
+
 
 int buffer = 0;
-int producer_debt = 5;
 int in = 0;
 int out = 0;
 
 
 void* producer(void* args) {
     int producer_id = *(int*)args;
-
     while (1) {
         // If buffer is full, wait for more space to be available
         sem_wait(producer_sem);
-        //if (buffer < 10) {
-            buffer++;
-            printf("Producer: %d produced item, buffer at: %d\n", producer_id, buffer);
-            // Increment consumer semaphore to indicate more buffer is available
-            sem_post(consumer_sem);
-        //} else {
-        //    printf("Producer: %d buffer full, cannot produce item\n", producer_id);
-        //}
-        sleep(rand() % 6 + 1);
+
+        // Increment buffer and print to acknowledge
+        pthread_mutex_lock(&buffer_mutex);
+        buffer++;
+        printf("Producer: %d produced item, buffer at: %d\n", producer_id, buffer);
+        pthread_mutex_unlock(&buffer_mutex);
+        sem_post(consumer_sem);
+        sleep(rand() % 3 + 1);
+
+         // Simulate producing time
     }
     
     free(args);
@@ -63,16 +67,19 @@ void* producer(void* args) {
 void* consumer(void* args) {
     int consumer_id = *(int*)args;
     while (1) {
+    
         // If buffer is empty, wait for more items to be produced
         sem_wait(consumer_sem);
 
+        pthread_mutex_lock(&buffer_mutex);
         printf("Consumer: %d taking from buffer...\n", consumer_id);
         buffer--;
         printf("Consumer: %d took from buffer, buffer at: %d\n", consumer_id, buffer);
-        sleep(rand() % 6 + 1);
-
-        // Increment producer semaphore to indicate 
+        pthread_mutex_unlock(&buffer_mutex);
+        // Increment producer semaphore to indicate space in the buffer
         sem_post(producer_sem);
+        sleep(rand() % 3 + 1);
+
     }
 
     free(args);
@@ -90,6 +97,9 @@ int main() {
 
     // Define the threads
     pthread_t producer_threads[PRODUCER_NUM], consumer_threads[CONSUMER_NUM];
+
+    // Initialize mutex
+    pthread_mutex_init(&buffer_mutex, NULL);
 
     // Create consumer semaphore
     consumer_sem = sem_open("/consumer_semaphore", O_CREAT, 0644, 0);
@@ -113,6 +123,7 @@ int main() {
             printf("Error creating producer thread\n");
             return 1;
         }
+        // sleep(3);
     }
 
     // Create consumer threads
@@ -123,7 +134,7 @@ int main() {
             printf("Error creating consumer thread\n");
             return 1;
         }
-        sleep(3);
+        // sleep(3);
     }
 
     // Join producer threads
@@ -143,6 +154,7 @@ int main() {
     }
 
     // Cleanup
+    pthread_mutex_destroy(&buffer_mutex);
     sem_close(consumer_sem);
     sem_close(producer_sem);
     sem_unlink("/consumer_semaphore");

@@ -7,25 +7,27 @@
 #include <semaphore.h>
 #include <fcntl.h>
 
-// Producers: These threads create data (or items) and place them into the buffer.
-// Consumers: These threads take data (or items) out of the buffer to process it
+/* 
+Producers: These threads create data (or items) and place them into the buffer.
+Consumers: These threads take data (or items) out of the buffer to process it
 
-// The Challenge​
-// The buffer has a fixed size, meaning:​
-// Producers must wait if the buffer is full before adding more items.
-// Consumers must wait if the buffer is empty before taking items
+The Challenge​
+The buffer has a fixed size, meaning:​
+Producers must wait if the buffer is full before adding more items.
+Consumers must wait if the buffer is empty before taking items
 
-// Create multiple producer threads and consumer threads.​
+Create multiple producer threads and consumer threads.​
 
-// Simulate the following:​
-// Each producer thread "produces" an item by printing a message (e.g., "Producer X produced item Y").​
-// Each consumer thread "consumes" an item by printing a message (e.g., "Consumer Z consumed item Y").​
-// Make each thread sleep for a random amount of time to simulate the time taken for producing or consuming an item.​
+Simulate the following:​
+Each producer thread "produces" an item by printing a message (e.g., "Producer X produced item Y").​
+Each consumer thread "consumes" an item by printing a message (e.g., "Consumer Z consumed item Y").​
+Make each thread sleep for a random amount of time to simulate the time taken for producing or consuming an item.​
 
-// Ensure proper synchronization:​
-// Producers must wait if the buffer is full.​
-// Consumers must wait if the buffer is empty.​
-// Use a semaphore to achieve this
+Ensure proper synchronization:​
+Producers must wait if the buffer is full.​
+Consumers must wait if the buffer is empty.​
+Use a semaphore to achieve this
+*/
 
 #define BUFFER_SIZE 10
 #define BUFFER_EMPTY 0

@@ -128,7 +128,8 @@ int main() {
     for (int i = 0; i < NUM_OF_PHILOSOPHERS; i++) {
         char sem_name[20];
         sprintf(sem_name, "/chopstick_%d", i);
-        sem_unlink(sem_name);
+        // Close the semaphore before unlinking so you don't lose access
         sem_close(chopsticks[i]);
+        sem_unlink(sem_name);
     }
 }

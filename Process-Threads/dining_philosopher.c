@@ -50,8 +50,7 @@ void* philosopher(void *args) {
 
     while (1) {
         printf("Philosopher %d is thinking...\n", philosopher_id + 1);
-        sleep(5);
-        // sleep(rand() % 3 + 1);
+        sleep(rand() % 3 + 1);
 
         // Pick up left chopstick
         sem_wait(chopsticks[left_chopstick]);
@@ -63,8 +62,7 @@ void* philosopher(void *args) {
 
         // Eat
         printf("Philosopher %d is eating...\n", philosopher_id + 1);
-        sleep(5);
-        //sleep(rand() % 3 + 1);
+        sleep(rand() % 3 + 1);
 
         // Put down chopsticks
         sem_post(chopsticks[left_chopstick]);
@@ -78,7 +76,8 @@ void* philosopher(void *args) {
     return NULL;
 }
 int main() {
-    srand(time(NULL));  // Seed for random sleep times
+    srand(time(NULL));  
+    // Ensure previous semaphore instances are removed
     for (int i = 0; i < NUM_OF_PHILOSOPHERS; i++) {
         char sem_name[20];
         sprintf(sem_name, "/chopstick_%d", i);
@@ -91,10 +90,9 @@ int main() {
     pthread_t philosopher_threads[NUM_OF_PHILOSOPHERS];
 
     // Initialize semaphores for each chopstick
-    for (i = 0; i < NUM_OF_PHILOSOPHERS; i++) {
+    for (i = 0; i < NUM_OF_CHOPSTICKS; i++) {
         char sem_name[20];
         sprintf(sem_name, "/chopstick_%d", i);
-        sem_unlink(sem_name);  // Ensure previous instances are removed
         chopsticks[i] = sem_open(sem_name, O_CREAT, 0644, 1);
     
         if (chopsticks[i] == SEM_FAILED) {
@@ -102,10 +100,10 @@ int main() {
             return 1;
         }
 
-        // Debug: Print semaphore name and its value
-        int sem_val;
-        sem_getvalue(chopsticks[i], &sem_val);
-        printf("Chopstick %d: Address=%p, Initial Value=%d\n", i, (void *)chopsticks[i], sem_val);
+        // // Debug: Print semaphore name and its value
+        // int sem_val;
+        // sem_getvalue(chopsticks[i], &sem_val);
+        // printf("Chopstick %d: Address=%p, Initial Value=%d\n", i, (void *)chopsticks[i], sem_val);
     }
 
 

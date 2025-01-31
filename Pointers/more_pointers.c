@@ -4,7 +4,8 @@
 
 int main(void) {
     // Pointers
-    // Pointers are also variables and play a very important role in C programming language. They are used for several reasons, such as:
+    // Pointers are also variables and play a very important role in C programming language.
+    // They are used for several reasons, such as:
 
     // Strings
     // Dynamic memory allocation
@@ -18,7 +19,9 @@ int main(void) {
     // A pointer is essentially a simple integer variable which holds a memory address that points to a value, 
     // instead of holding the actual value itself.
 
-    // The computer's memory is a sequential store of data, and a pointer points to a specific part of the memory. Our program can use pointers in such a way that the pointers point to a large amount of memory - depending on how much we decide to read from that point on.
+    // The computer's memory is a sequential store of data, and a pointer points to a specific part of the memory. 
+    // Our program can use pointers in such a way that the pointers point to a large amount of memory 
+    // - depending on how much we decide to read from that point on.
 
     // Strings as pointers
     // We've already discussed strings, but now we can dive in a bit deeper 
@@ -32,13 +35,21 @@ int main(void) {
 
     // It allocates a local (stack) variable called name, which is a pointer to a single character.
     // It causes the string "John" to appear somewhere in the program memory (after it is compiled and executed, of course).
-    // It initializes the name argument to point to where the J character resides at (which is followed by the rest of the string in the memory).
-    // If we try to access the name variable as an array, it will work, and will return the ordinal value of the character J, since the name variable actually points exactly to the beginning of the string.
+    // It initializes the name argument to point to where the J character resides at 
+    // (which is followed by the rest of the string in the memory).
+    // If we try to access the name variable as an array, it will work, and will return the ordinal value of the character J,
+    //  since the name variable actually points exactly to the beginning of the string.
 
-    // Since we know that the memory is sequential, we can assume that if we move ahead in the memory to the next character, we'll receive the next letter in the string, until we reach the end of the string, marked with a null terminator (the character with the ordinal value of 0, noted as \0).
+    // Since we know that the memory is sequential, we can assume that if we move ahead in the memory to the next character, 
+    // we'll receive the next letter in the string, until we reach the end of the string, marked with a null terminator 
+    // (the character with the ordinal value of 0, noted as \0).
 
     // Dereferencing
-    // Dereferencing is the act of referring to where the pointer points, instead of the memory address. We are already using dereferencing in arrays - but we just didn't know it yet. The brackets operator - [0] for example, accesses the first item of the array. And since arrays are actually pointers, accessing the first item in the array is the same as dereferencing a pointer. Dereferencing a pointer is done using the asterisk operator *.
+    // Dereferencing is the act of referring to where the pointer points, instead of the memory address. 
+    // We are already using dereferencing in arrays - but we just didn't know it yet. 
+    // The brackets operator - [0] for example, accesses the first item of the array. 
+    // And since arrays are actually pointers, accessing the first item in the array is the same as dereferencing a pointer. 
+    // Dereferencing a pointer is done using the asterisk operator *.
 
     // If we want to create an array that will point to a different variable in our stack, we can write the following code:
 
@@ -49,7 +60,7 @@ int main(void) {
     int * pointer_to_a = &a;
 
     printf("The value a is %d\n", a);
-    printf("The value of a is also %d\n", *pointer_to_a);
+    printf("The value of a, dereferenced from the pointer, is also %d\n", *pointer_to_a);
     // Notice that we used the & operator to point at the variable a, which we have just created.
 
     // We then referred to it using the dereferencing operator. We can also change the contents of the dereferenced variable:

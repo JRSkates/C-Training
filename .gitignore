@@ -49,3 +49,4 @@ Process-Threads/arguments_threads
 Process-Threads/semaphores_intro
 Process-Threads/car-park-semaphore
 Process-Threads/producer_consumer
+Process-Threads/dining_philosopher

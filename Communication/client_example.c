@@ -22,6 +22,10 @@ int main() {
     char buffer[1024] = {0};  // Buffer to store server response
 
     // Step 1: Create a TCP socket
+    // Calls socket() to create a TCP socket (SOCK_STREAM).
+    // Uses IPv4 addressing (AF_INET).
+    // The protocol is set to 0, meaning TCP is selected automatically.
+    // If the socket creation fails, it prints an error and exits.
     sock = socket(AF_INET, SOCK_STREAM, 0);
     if (sock < 0) {
         perror("Socket creation failed");
@@ -29,6 +33,8 @@ int main() {
     }
 
     // Step 2: Specify server address details
+    // The IPv4 address family is set (AF_INET).
+    // htons(PORT) converts the port number to network byte order for compatibility
     serv_addr.sin_family = AF_INET;       // IPv4
     serv_addr.sin_port = htons(PORT);     // Convert port number to network byte order
 

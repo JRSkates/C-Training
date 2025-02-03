@@ -52,3 +52,7 @@ Process-Threads/producer_consumer
 Process-Threads/dining_philosopher
 Communication/exercise_1
 Communication/main
+Communication/server_example
+Communication/client_example
+Communication/pipe
+Communication/sockets

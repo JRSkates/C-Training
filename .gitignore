@@ -50,3 +50,5 @@ Process-Threads/semaphores_intro
 Process-Threads/car-park-semaphore
 Process-Threads/producer_consumer
 Process-Threads/dining_philosopher
+Communication/exercise_1
+Communication/main

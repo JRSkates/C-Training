@@ -28,6 +28,7 @@ int main() {
     // Uses IPv4 addressing (AF_INET).
     // The protocol is set to 0, meaning TCP is selected automatically.
     // If the socket creation fails, it prints an error and exits.
+                     // domain  type         protocol
     server_fd = socket(AF_INET, SOCK_STREAM, 0);
     if (server_fd == -1) {
         perror("Socket creation failed");

@@ -36,7 +36,7 @@ int main(void) {
         exit(EXIT_FAILURE);
     }
 
-    // Step 5: Send message to the server every 10 seconds
+    // Step 5: Send message to the server every 5 minutes, 10 times
     while (n < 10) {
         time_t current_time;
         struct tm *time_info;
@@ -55,7 +55,7 @@ int main(void) {
         send(client_sock, time_str, strlen(time_str), 0);
         printf("Message sent to the server: %s\n", time_str);
 
-        sleep(10);  // Wait for 10 seconds before sending again
+        sleep(300);  // Wait for 10 seconds before sending again
         n++;
     }
 

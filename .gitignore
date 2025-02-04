@@ -58,3 +58,5 @@ Communication/pipe
 Communication/sockets
 Communication/multiplexing
 Communication/practice_server
+Communication/practice_client
+Communication/time

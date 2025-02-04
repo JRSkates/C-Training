@@ -3,15 +3,17 @@
 #include <string.h>     // String handling functions
 #include <unistd.h>     // UNIX standard functions (close, read, write)
 #include <arpa/inet.h>  // Definitions for internet operations (socket, bind, listen, accept)
+#include <time.h>
 
 #define PORT 8080  // Port number for server to listen on
+#define BUFFER_SIZE 1024 
 
 int main(void) {
     int server_fd, new_socket; // declare server socket and new socket (for incoming requests) variables
     struct sockaddr_in server_addr; // The SOCKADDR_IN structure specifies a transport address and port for the AF_INET address family.
     int addrlen = sizeof(server_addr); // the length of the address
-    char buffer[1024] = {0}; // Buffer to store received messages
-
+    char buffer[BUFFER_SIZE] = {0}; // Buffer to store received messages
+    int n = 0;
 
     // Step 1: Create a TCP socket
     server_fd = socket(AF_INET, SOCK_STREAM, 0);
@@ -26,7 +28,7 @@ int main(void) {
     server_addr.sin_port = htons(PORT); // Convert port number to network byte order
 
     // Step 3: Bind the socket to the IP and port
-    if (bind(server_fd, (struct sockaddr*)&server_addr, addrlen) < 0) {
+    if (bind(server_fd, (struct sockaddr*)&server_addr, sizeof(server_addr)) < 0) {
         perror("Binding failed");
         exit(EXIT_FAILURE);
     }
@@ -47,9 +49,11 @@ int main(void) {
     }
 
     // Step 6: Receive data from client
-    read(new_socket, buffer, 1024);
-    printf("Client: %s\n", buffer);
-
+    while (n < 10) {
+        read(new_socket, buffer, BUFFER_SIZE);
+        printf("Client: %s\n", buffer);
+        n++;
+    }
     // Step 7: Close the connection
     close(new_socket);
     close(server_fd);

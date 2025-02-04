@@ -3,7 +3,7 @@
 #include <string.h>     // String handling functions
 #include <unistd.h>     // UNIX standard functions (close, read, write)
 #include <arpa/inet.h>  // Definitions for internet operations (socket, bind, listen, accept)
-#include <time.h>
+#include <time.h> // Unix timestamp
 
 #define PORT 8080  // Port number for server to listen on
 #define BUFFER_SIZE 1024 

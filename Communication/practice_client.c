@@ -10,8 +10,10 @@
 int main(void) {
     int client_sock = 0;
     struct sockaddr_in serv_addr;  // Struct to store server address information
-    char buffer[1024] = {0};       // Buffer to store server response
+    // char buffer[1024] = {0};       // Buffer to store server response
     int n = 0;
+    const char *time_format = "%Y-%m-%d %H:%M:%S";  // Desired time format
+
 
     // Step 1: Create a TCP socket
     client_sock = socket(AF_INET, SOCK_STREAM, 0);
@@ -40,7 +42,7 @@ int main(void) {
     while (n < 10) {
         time_t current_time;
         struct tm *time_info;
-        char time_str[100];  // Fixed declaration
+        char time_str[48];  // Fixed declaration
 
         // Get the current time
         time(&current_time);
@@ -55,9 +57,10 @@ int main(void) {
         send(client_sock, time_str, strlen(time_str), 0);
         printf("Message sent to the server: %s\n", time_str);
 
-        sleep(300);  // Wait for 10 seconds before sending again
         n++;
+        sleep(3);  // Wait for 10 seconds before sending again
     }
+
 
     // Step 6: Close the socket
     close(client_sock);

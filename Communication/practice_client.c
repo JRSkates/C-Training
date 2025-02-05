@@ -1,68 +1,87 @@
+// practice_client.c - a micro-client that sends a message to a server and awaits a reply
+#include <errno.h>
+#include <netdb.h>
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
+#include <sys/types.h>
+#include <sys/socket.h>
 #include <unistd.h>
-#include <arpa/inet.h>
-#include <time.h>
 
-#define PORT 8080  // Port number for server to listen on
+#define PORT 4242  // server port to connect to
 
-int main(void) {
-    int client_sock = 0;
-    struct sockaddr_in serv_addr;  // Struct to store server address information
-    // char buffer[1024] = {0};       // Buffer to store server response
-    int n = 0;
-    const char *time_format = "%Y-%m-%d %H:%M:%S";  // Desired time format
+int main(int ac, char **av)
+{
+    printf("---- CLIENT ----\n\n");
+    struct sockaddr_in sa;
+    int socket_fd;
+    int status;
+    char buffer[BUFSIZ];
+    int bytes_read;
+    char *msg;
+    int msg_len;
+    int bytes_sent;
 
-
-    // Step 1: Create a TCP socket
-    client_sock = socket(AF_INET, SOCK_STREAM, 0);
-    if (client_sock < 0) {
-        perror("Socket creation failed");
-        exit(EXIT_FAILURE);
+    if (ac != 2) {
+        printf("Usage: ./client \"Message to send\"");
+        return (1);
     }
 
-    // Step 2: Specify server address details
-    serv_addr.sin_family = AF_INET;
-    serv_addr.sin_port = htons(PORT);
+    // Prepare the address and port for the server socket
+    memset(&sa, 0, sizeof sa);
+    sa.sin_family = AF_INET; // IPv4
+    sa.sin_addr.s_addr = htonl(INADDR_LOOPBACK); // 127.0.0.1, localhost
+    sa.sin_port = htons(PORT);
 
-    // Step 3: Convert IP from string to binary form and store in serv_addr
-    if (inet_pton(AF_INET, "127.0.0.1", &serv_addr.sin_addr) <= 0) {
-        perror("Invalid address / Address not supported");
-        exit(EXIT_FAILURE);
+    // Create socket, connect it to remote server
+    socket_fd = socket(sa.sin_family, SOCK_STREAM, 0);
+    if (socket_fd == -1) {
+        fprintf(stderr, "socket fd error: %s\n", strerror(errno));
+        return (2);
+    }
+    printf("Created socket fd: %d\n", socket_fd);
+
+    status = connect(socket_fd, (struct sockaddr *)&sa, sizeof sa);
+    if (status != 0) {
+        fprintf(stderr, "connect error: %s\n", strerror(errno));
+        return (3);
+    }
+    printf("Connected socket to localhost port %d\n", PORT);
+
+    // Send a message to server
+    msg = av[1];
+    msg_len = strlen(msg);
+    bytes_sent = send(socket_fd, msg, msg_len, 0);
+    if (bytes_sent == -1) {
+        fprintf(stderr, "send error: %s\n", strerror(errno));
+    }
+    else if (bytes_sent == msg_len) {
+        printf("Sent full message: \"%s\"\n", msg);
+    }
+    else {
+        printf("Sent partial message: %d bytes sent.\n", bytes_sent);
     }
 
-    // Step 4: Connect to the server
-    if (connect(client_sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0) {
-        perror("Connection to server failed");
-        exit(EXIT_FAILURE);
+    // Wait for message from server via the socket
+    bytes_read = 1;
+    while (bytes_read >= 0) {
+        bytes_read = recv(socket_fd, buffer, BUFSIZ, 0);
+        if (bytes_read == 0) {
+            printf("Server closed connection.\n");
+            break ;
+        }
+        else if (bytes_read == -1) {
+            fprintf(stderr, "recv error: %s\n", strerror(errno));
+            break ;
+        }
+        else {
+            // We got a message, print it
+            buffer[bytes_read] = '\0';
+            printf("Message received: \"%s\"\n", buffer);
+            break ;
+        }
     }
 
-    // Step 5: Send message to the server every 5 minutes, 10 times
-    while (n < 10) {
-        time_t current_time;
-        struct tm *time_info;
-        char time_str[48];  // Fixed declaration
-
-        // Get the current time
-        time(&current_time);
-
-        // Convert it to local time
-        time_info = localtime(&current_time);
-
-        // Format time as a readable string
-        strftime(time_str, sizeof(time_str), "%Y-%m-%d %H:%M:%S", time_info);
-
-        // Send formatted time string to server
-        send(client_sock, time_str, strlen(time_str), 0);
-        printf("Message sent to the server: %s\n", time_str);
-
-        n++;
-        sleep(3);  // Wait for 10 seconds before sending again
-    }
-
-
-    // Step 6: Close the socket
-    close(client_sock);
-    return 0;
+    printf("Closing socket\n");
+    close(socket_fd);
+    return (0);
 }

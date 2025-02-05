@@ -1,62 +1,104 @@
-#include <stdio.h>      // Standard I/O functions
-#include <stdlib.h>     // Standard library functions
-#include <string.h>     // String handling functions
-#include <unistd.h>     // UNIX standard functions (close, read, write)
-#include <arpa/inet.h>  // Definitions for internet operations (socket, bind, listen, accept)
-#include <time.h> // Unix timestamp
+// practice_server.c - a micro-server that accepts a client connection, waits for a message, and replies
+#include <errno.h>
+#include <netdb.h>
+#include <stdio.h>
+#include <string.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <unistd.h>
 
-#define PORT 8080  // Port number for server to listen on
-#define BUFFER_SIZE 1024 
+#define PORT 4242  // our server's port
+#define BACKLOG 10  // max number of connection requests in queue
 
-int main(void) {
-    int server_fd, new_socket; // declare server socket and new socket (for incoming requests) variables
-    struct sockaddr_in server_addr; // The SOCKADDR_IN structure specifies a transport address and port for the AF_INET address family.
-    int addrlen = sizeof(server_addr); // the length of the address
-    char buffer[BUFFER_SIZE] = {0}; // Buffer to store received messages
-    int n = 0;
+int main(void)
+{
+    printf("---- SERVER ----\n\n");
+    struct sockaddr_in sa;
+    int socket_fd;
+    int client_fd;
+    int status;
+    struct sockaddr_storage client_addr;
+    socklen_t addr_size;
+    char buffer[BUFSIZ];
+    int bytes_read;
 
-    // Step 1: Create a TCP socket
-    server_fd = socket(AF_INET, SOCK_STREAM, 0);
-    if (server_fd < 0) {
-        perror("Socket creation failed");
-        exit(EXIT_FAILURE);
+    // Prepare the address and port for the server socket
+    memset(&sa, 0, sizeof sa);
+    sa.sin_family = AF_INET; // IPv4
+    sa.sin_addr.s_addr = htonl(INADDR_LOOPBACK); // 127.0.0.1, localhost
+    sa.sin_port = htons(PORT);
+
+    // Create socket, bind it and listen with it
+    socket_fd = socket(sa.sin_family, SOCK_STREAM, 0);
+    if (socket_fd == -1) {
+        fprintf(stderr, "socket fd error: %s\n", strerror(errno));
+        return (1);
+    }
+    printf("Created server socket fd: %d\n", socket_fd);
+
+    status = bind(socket_fd, (struct sockaddr *)&sa, sizeof sa);
+    if (status != 0) {
+        fprintf(stderr, "bind error: %s\n", strerror(errno));
+        return (2);
+    }
+    printf("Bound socket to localhost port %d\n", PORT);
+
+    printf("Listening on port %d\n", PORT);
+    status = listen(socket_fd, BACKLOG);
+    if (status != 0) {
+        fprintf(stderr, "listen error: %s\n", strerror(errno));
+        return (3);
     }
 
-    // Step 2: Define server server_address structure
-    server_addr.sin_family = AF_INET; // IPv4 address family
-    server_addr.sin_addr.s_addr = INADDR_ANY; // Accept connections on any IP (localhost or network IP)
-    server_addr.sin_port = htons(PORT); // Convert port number to network byte order
+    // Accept incoming connection
+    addr_size = sizeof client_addr;
+    client_fd = accept(socket_fd, (struct sockaddr *)&client_addr, &addr_size);
+    if (client_fd == -1) {
+        fprintf(stderr, "client fd error: %s\n", strerror(errno));
+        return (4);
+    }
+    printf("Accepted new connection on client socket fd: %d\n", client_fd);
 
-    // Step 3: Bind the socket to the IP and port
-    if (bind(server_fd, (struct sockaddr*)&server_addr, sizeof(server_addr)) < 0) {
-        perror("Binding failed");
-        exit(EXIT_FAILURE);
+    // Receive message from client socket
+    bytes_read = 1;
+    while (bytes_read >= 0) {
+        printf("Reading client socket %d\n", client_fd);
+        bytes_read = recv(client_fd, buffer, BUFSIZ, 0);
+        if (bytes_read == 0) {
+            printf("Client socket %d: closed connection.\n", client_fd);
+            break ;
+        }
+        else if (bytes_read == -1) {
+            fprintf(stderr, "recv error: %s\n", strerror(errno));
+            break ;
+        }
+        else {
+            // We got a message, print it
+            // and send a message back to client
+            char *msg = "Got your message.";
+            int msg_len = strlen(msg);
+            int bytes_sent;
+
+            buffer[bytes_read] = '\0';
+            printf("Message received from client socket %d: \"%s\"\n", client_fd, buffer);
+
+            bytes_sent = send(client_fd, msg, msg_len, 0);
+            if (bytes_sent == -1) {
+                fprintf(stderr, "send error: %s\n", strerror(errno));
+            }
+            else if (bytes_sent == msg_len) {
+                printf("Sent full message to client socket %d: \"%s\"\n", client_fd, msg);
+            }
+            else {
+                printf("Sent partial message to client socket %d: %d bytes sent.\n", client_fd, bytes_sent);
+            }
+        }
     }
 
-    // Step 4: Put the server in a listening state (maximum 3 pending connections)
-    if (listen(server_fd, 3) < 0) {
-        perror("Listening failed");
-        exit(EXIT_FAILURE);
-    }
+    printf("Closing client socket\n");
+    close(client_fd);
+    printf("Closing server socket\n");
+    close(socket_fd);
 
-    printf("Server listening on PORT: %d...\n", PORT);
-
-    // Step 5: Accept an incoming connection from a client
-    new_socket = accept(server_fd, (struct sockaddr*)&server_addr, (socklen_t*)&addrlen);
-    if (new_socket < 0) {
-        perror("Accept failed");
-        exit(EXIT_FAILURE);
-    }
-
-    // Step 6: Receive data from client
-    while (n < 10) {
-        read(new_socket, buffer, BUFFER_SIZE);
-        printf("Client: %s\n", buffer);
-        n++;
-    }
-    // Step 7: Close the connection
-    close(new_socket);
-    close(server_fd);
-
-    return 0;
+    return (0);
 }

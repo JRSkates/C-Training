@@ -49,8 +49,8 @@ int main() {
     // This assigns the socket to the IP and port number specified in the server_address structure.
     // If the binding fails, the server will exit with an error message.
 
-        //  the socket                address, as definded          size of memory
-        //    you want               in the server_address       as defined in the
+        //  the socket                address, as definded          size allocated   
+        //    you want               in the server_address      in memory, defined 
         //     to bind                           structure   server_address struct
     if (bind(server_fd, (struct sockaddr *)&server_address, sizeof(server_address)) < 0) {
         perror("Binding failed");
